@@ -13,6 +13,12 @@ class DB(object):
     assumed to be fully pickle-able.
     """
     def __init__(self):
+        """
+        Class variables:
+
+        DB.el_db ::: map of ID : document
+        DB.prop_db ::: map of property : value : ID
+        """
         self.el_db = {}
         self.prop_db = {}
 
