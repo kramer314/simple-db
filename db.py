@@ -165,13 +165,14 @@ class DB(object):
         if _id in self.el_db:
             for prop, val in self.el_db[_id].items():
 
-                prop_db = self.prop_db[prop]
+                if prop in self.prop_db:
+                    prop_db = self.prop_db[prop]
                 
-                prop_db[val].remove(_id)
-                if len(prop_db[val]) == 0:
-                    del prop_db[val]
-                if len(prop_db) == 0:
-                    del slef.prop_db[prop]
+                    prop_db[val].remove(_id)
+                    if len(prop_db[val]) == 0:
+                        del prop_db[val]
+                    if len(prop_db) == 0:
+                        del self.prop_db[prop]
 
             del self.el_db[_id]
         else:
@@ -198,7 +199,7 @@ class DB(object):
         except:
             raise IOError("Database save failed")
 
-    def open(self, fname):
+    def load(self, fname):
         """
         Loads the database from a pickled file on disk 
 
