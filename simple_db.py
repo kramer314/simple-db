@@ -8,7 +8,8 @@ import uuid
 import pickle
 import collections
 
-from db_queries import *
+import db_queries
+
 
 class SimpleDB(object):
     """
@@ -32,6 +33,14 @@ class SimpleDB(object):
         self.el_db = {}
         self.prop_db = {}
         self.fname = None
+
+        self.eq = db_queries.eq
+        self.ne = db_queries.ne
+        self.ge = db_queries.ge
+        self.gt = db_queries.gt
+        self.le = db_queries.le
+        self.lt = db_queries.lt
+        self.rx = db_queries.rx
 
     def size(self):
         """
@@ -81,7 +90,8 @@ class SimpleDB(object):
                     isinstance(val, collections.Hashable)
 
             if not valid:
-                raise TypeError("Indexed document properties are not hashable.")
+                raise TypeError("Indexed document properties are not" +
+                                "hashable")
         except AttributeError:
             raise AttributeError("Improper document format.")
 
