@@ -1,14 +1,13 @@
 """
-Copyright (c) 2014 Alex Kramer <kramer.alex.kramer@gmail.com>
+Copyright (c) 2015 Alex Kramer <kramer.alex.kramer@gmail.com>
 
 See the LICENSE.txt file at the top-level directory of this distribution.
 """
 
-import uuid
-import pickle
 import collections
-
-import db_queries
+import pickle
+import re
+import uuid
 
 
 class SimpleDB(object):
@@ -22,7 +21,26 @@ class SimpleDB(object):
     dictionaries containing lists, etc.) can be stored as long as the mutable
     elements are excluded from indexing (not searchable). All documents are
     assumed to be fully pickle-able.
+
+    Built-in queries:
+    eq ::: equals
+    ne ::: not equals
+    gt ::: greater than
+    ge ::: greater than or equal to
+    lt ::: less than
+    le ::: less than or equal to
+    rx ::: regex match (case insensitive)
+
+    See  `DB.query` for more details.
     """
+    eq = lambda _val, val: _val == val
+    lt = lambda _val, val: _val != val
+    ge = lambda _val, val: _val >= val
+    gt = lambda _val, val: _val > val
+    le = lambda _val, val: _val <= val
+    lt = lambda _val, val: _val < val
+    rx = lambda _val, val: (re.match(val, _val, re.I) is not None)
+
     def __init__(self):
         """
         Class variables:
@@ -30,22 +48,16 @@ class SimpleDB(object):
         DB.el_db ::: map of ID : document
         DB.prop_db ::: map of property : value : ID
         """
+
         self.el_db = {}
         self.prop_db = {}
         self.fname = None
-
-        self.eq = db_queries.eq
-        self.ne = db_queries.ne
-        self.ge = db_queries.ge
-        self.gt = db_queries.gt
-        self.le = db_queries.le
-        self.lt = db_queries.lt
-        self.rx = db_queries.rx
 
     def size(self):
         """
         Size of the database (total number of documents)
         """
+
         return len(self.el_db.keys())
 
     def access(self, id_iter):
@@ -56,6 +68,7 @@ class SimpleDB(object):
 
         returns ::: list of documents parallel to `id_iter`
         """
+
         res = []
 
         for id_ in id_iter:
@@ -132,6 +145,7 @@ class SimpleDB(object):
         can be called with the final (combined) result to obtain located
         documents.
         """
+
         matches = set()
 
         if prop in self.prop_db:
@@ -157,6 +171,7 @@ class SimpleDB(object):
 
         See the note in `DB.query()` regarding chained queries.
         """
+
         matches = set()
 
         if prop in self.prop_db:
@@ -176,6 +191,7 @@ class SimpleDB(object):
         This method raises a LookupError if the ID `id_` is not in the
         database.
         """
+
         if id_ in self.el_db:
             for prop in self.el_db[id_].items():
 
@@ -192,6 +208,7 @@ class SimpleDB(object):
         id_ ::: id of the element to replace
         el ::: replacement document
         """
+
         self.remove(id_)
         self.add(el, exclude=exclude, id_=id_)
 
@@ -231,6 +248,7 @@ class SimpleDB(object):
         id_ ::: document id
         prop ::: property to delete
         """
+
         if id_ not in self.el_db:
             raise LookupError("Document ID not found.")
 
@@ -254,6 +272,7 @@ class SimpleDB(object):
         """
         Reset the database, clearing all stored documents and search indexes.
         """
+
         self.el_db = {}
         self.prop_db = {}
 
@@ -287,6 +306,7 @@ class SimpleDB(object):
 
         If DB was loaded from file, fname defaults to that file
         """
+
         try:
             _in = pickle.load(open(fname, "rb"))
             self.el_db = _in["el_db"]
