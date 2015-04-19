@@ -1,17 +1,17 @@
-Copyright (c) 2014 Alex Kramer <kramer.alex.kramer@gmail.com>
+Copyright (c) 2015 Alex Kramer <kramer.alex.kramer@gmail.com>
 
 See the LICENSE.txt file at the top-level directory of this distribution.
 
 Description
 -----------
-SimpleDB is a minimal document-oriented database, designed for small- and
-medium-scale applications that would benefit from persistent data storage
-and / or structured in-memory data management, but do not require a highly
-optimized or scalable library.
+SimpleDB is a minimal document-oriented database. It's intended for smaller
+applications that would benefit from persistant data storage and / or
+structured in-memory data management, but don't need an enterprise-level
+solution.
 
-Downloading
------------
-[Eventually, on GitHub / PyPi]
+Usage
+-----
+[TODO]
 
 Usage Example
 -------------
@@ -27,7 +27,7 @@ Usage Example
 
 Documentation
 -------------
-Full documentation is available in the ./doc/ directory of this distribution.
+[TODO]
 
 Installation
 ------------
@@ -35,11 +35,7 @@ Installation
 
 Bug reports / Planned features
 ------------------------------
-[Eventually on Github or in TODO.txt file]
-
-Changelog
----------
-[See CHANGELOG.TXT]
+[TODO]
 
 Author(s)
 ---------
